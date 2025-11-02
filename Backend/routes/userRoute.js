@@ -77,6 +77,24 @@ router.put("/:id/skills", async (req, res) => {
     }
 });
 
+// Update user profile (username, email)
+router.put("/update/:id", async (req, res) => {
+    const { username, email } = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { username, email },
+            { new: true }
+        );
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.status(200).json({ message: "Profile updated successfully", user });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+
+
 router.get("/profile", async (req, res) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ message: "Access denied" });

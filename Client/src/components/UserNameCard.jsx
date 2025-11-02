@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const UserNameCard = ({ name }) => {
+const UserNameCard = ({ name, mail }) => {
   return (
     <Wrapper>
       <div className="card">
@@ -14,8 +14,8 @@ const UserNameCard = ({ name }) => {
             </div>
           </div>
           <div className="texts">
-            <p className="title-1">Welcome back, {name}</p>
-            <p className="title-2">Tha Mechanic</p>
+            <p className="title-1">Good to see you again, {name}</p>
+            <p className="title-2">Logged in as {mail}</p>
           </div>
         </div>
         <div className="time">
@@ -31,7 +31,8 @@ const Wrapper = styled.div`
     position: relative;
     width: 100vh;
     max-width: 450px;
-    height: 130px;
+    height: 100%;
+    min-height: 10rem;
     background: linear-gradient(135deg, #1e1e2f, #3a1f6a);
     border-radius: 15px;
     padding: 20px 25px;
@@ -89,7 +90,7 @@ const Wrapper = styled.div`
 
   .title-1 {
     color: #d6bcfa;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: 700;
     margin: 0;
   }

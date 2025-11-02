@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import EditProfile from './pages/EditProfile';
 
 const App = () => {
   const location = useLocation();
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/about" element={<div>About Us Page</div>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path='/profile/edit' element={<EditProfile />} />
       </Routes>
     </>
   );

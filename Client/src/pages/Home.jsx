@@ -11,6 +11,8 @@ const Home = ({ recommendedRoles = [] }) => {
   const avgMatch = (recommendedRoles.length ? totalMatched / recommendedRoles.length : 0).toFixed(1);
   const missingSkills = [...new Set(recommendedRoles.flatMap(r => r.missingSkills || []))];
   const [username, setUsername] = useState('');
+  const [useremail, setUseremail] = useState('');
+  const [userId, setUserId] = useState('');
   const [userskills, setUserskills] = useState([]);
 
 
@@ -27,7 +29,10 @@ const Home = ({ recommendedRoles = [] }) => {
       console.log(data);
       setUsername(data.user.username);
       setUserskills(data.user.skills);
-      console.log(data.user.skills);
+      setUseremail(data.user.email);
+      setUserId(data.user._id);
+
+      // <EditProfile name={username} mail={useremail} userSkills={userskills} />
     } catch (err) {
       console.error('Error fetching profile:', err);
     }
@@ -45,6 +50,7 @@ const Home = ({ recommendedRoles = [] }) => {
         <nav className="flex flex-col gap-4 text-gray-700 font-semibold">
             <Link
             to="/profile/edit"
+            state={{ id: userId, name: username, mail: useremail, userSkills: userskills }}
             className="hover:text-purple-700 hover:bg-gray-100 flex items-center gap-3 px-3 py-2 rounded-md transition"
             >
             <Cog className="w-5 h-5" /> Edit Profile
@@ -69,22 +75,26 @@ const Home = ({ recommendedRoles = [] }) => {
         {/* <h1 className="text-3xl font-bold mb-4 text-purple-900">
           Welcome back, {username}. Let’s bridge your skill gaps.
         </h1> */}
-        <UserNameCard name={username} />
+        <UserNameCard name={username} mail={useremail} />
 
 
         {/* Skills */}
-        <section className="mb-8 mt-12 border p-6">
-          <h2 className="text-xl font-semibold mb-2">Your Skills</h2>
-          {userskills.length ? (
-            <ul className="space-y-1">
+        <section className="mb-8 mt-12 border border-purple-200 p-6 rounded-lg bg-white shadow-sm">
+          <h2 className="text-xl font-semibold mb-4 text-purple-900">Your Skills</h2>
+          {userskills?.length ? (
+            <ul className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
               {userskills.map(({ _id, name, level }) => (
-                <li key={_id} className="text-purple-700">
-                  {name} - <span className="font-medium">{level}</span>
+                <li
+                  key={_id}
+                  className="flex justify-between items-center bg-purple-50 border border-purple-100 px-4 py-2 rounded-md"
+                >
+                  <span className="text-purple-800 font-medium">{name}</span>
+                  <span className="text-sm text-gray-600">{level}</span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No skills added yet.</p>
+            <p className="text-gray-500 italic">No skills added yet.</p>
           )}
         </section>
 
