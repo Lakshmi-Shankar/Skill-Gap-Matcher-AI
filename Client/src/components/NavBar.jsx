@@ -1,6 +1,22 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
+import Cookies from 'js-cookie';
 
 const NavBar = () => {
+    const location = useLocation();
+    const isLoggedIn = !['/','/about'].includes(location.pathname);
+
+    const handleLogout = async () => {
+      await fetch('http://localhost:3000/api/users/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      Cookies.remove('editData');
+      // Optionally, you can redirect the user to the login page or home page after logout
+      window.location.href = '/';
+    }
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-1xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,6 +41,14 @@ const NavBar = () => {
             >
               About Us
             </a>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="text-gray-700 hover:text-red-600 transition-colors duration-200 font-medium"
+              >
+                <LogOut size={20} />
+              </button>
+            ) : null}
           </div>
 
           {/* Mobile Menu Button */}

@@ -14,7 +14,7 @@ const UserNameCard = ({ name, mail }) => {
             </div>
           </div>
           <div className="texts">
-            <p className="title-1">Good to see you again, {name}</p>
+            <p className="title-1">Good to see you again, <br />{name}</p>
             <p className="title-2">Logged in as {mail}</p>
           </div>
         </div>
