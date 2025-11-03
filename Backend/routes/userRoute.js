@@ -111,4 +111,13 @@ router.get("/profile", async (req, res) => {
     }
 });
 
+router.post("/logout", (req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Lax'
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+});
+
 module.exports = router;
