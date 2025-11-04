@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import LandingCard from '../components/LandingCard';
 import GetStarted from '../components/GetStarted';
+import AboutUs from './About';
 
 const LandingPage = () => {
     return (
@@ -81,11 +82,12 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="px-4 py-8 sm:px-6 lg:px-8 border-t border-purple-200 mt-20">
+            {/* <footer className="px-4 py-8 sm:px-6 lg:px-8 border-t border-purple-200 mt-20">
                 <div className="max-w-6xl mx-auto text-center text-purple-600">
                     <p>© 2025 Skill Gap Matcher</p>
                 </div>
-            </footer>
+            </footer> */}
+            <AboutUs />
         </div>
     );
 }
