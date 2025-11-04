@@ -10,7 +10,7 @@ import AboutUs from './pages/About';
 
 const App = () => {
   const location = useLocation();
-  const hideNavBar = ['/signup', '/login'].includes(location.pathname);
+  const hideNavBar = [].includes(location.pathname);
   return (
     <>
       {!hideNavBar && <NavBar />}

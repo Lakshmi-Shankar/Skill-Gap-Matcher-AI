@@ -13,10 +13,6 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const toastSuccess = () => toast("Signing up....");
-  const toastError = () => toast("Error occured....");
-  const toastMismatch = () => toast("Password are not matched...");
-
   const handleSubmit = async (e) => {
   e.preventDefault();
 
