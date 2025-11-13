@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import EditProfile from './pages/EditProfile';
 import AboutUs from './pages/About';
+import Roles from './pages/Roles';
 
 const App = () => {
   const location = useLocation();
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path='/profile-edit' element={<EditProfile />} />
+        <Route path='/roles' element={<Roles />} />
 
       </Routes>
     </>
