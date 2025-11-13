@@ -8,8 +8,9 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
 app.use(cookieParser());
+const origins = ["https://skillgapmatcherai.netlify.app", "http://localhost:5173"];
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: origins,
     credentials: true,
 }));
 app.use(express.json());
