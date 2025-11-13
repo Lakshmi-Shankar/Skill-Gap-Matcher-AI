@@ -19,6 +19,8 @@ const NavBar = () => {
       credentials: 'include',
     });
     Cookies.remove('editData');
+    sessionStorage.removeItem("reload");
+    sessionStorage.removeItem("allReadyRecommended");
     navigate('/');
   };
 
@@ -34,7 +36,7 @@ const NavBar = () => {
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img src="/path/to/logo.png" alt="Skill Gap Matcher Logo" className="h-8" />
+            <img src="../../public/leaves.png" alt="Skill Gap Matcher Logo" className="h-8" />
             <h1 className="text-2xl font-bold text-purple-600">Skill Gap Matcher</h1>
           </div>
 
