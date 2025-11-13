@@ -27,7 +27,7 @@ const Home = () => {
     
     const fetchUserProfile = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/users/profile", {
+        const res = await fetch("https://skill-gap-matcher-ai.onrender.com/api/users/profile", {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

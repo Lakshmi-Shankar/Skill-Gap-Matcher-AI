@@ -17,7 +17,7 @@ const Login = () => {
     }
 
     try {
-      const loginPromise = axios.post("http://localhost:3000/api/users/login", {
+      const loginPromise = axios.post("https://skill-gap-matcher-ai.onrender.com/api/users/login", {
         email,
         password,
       }, { withCredentials: true });
