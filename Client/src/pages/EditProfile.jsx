@@ -33,14 +33,14 @@ const EditProfile = () => {
       return;
     }
     try {
-      const res1 = await fetch(`http://localhost:3000/api/users/update/${id}`, {
+      const res1 = await fetch(`https://skill-gap-matcher-ai.onrender.com/api/users/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ username, email }),
       });
 
-      const res2 = await fetch(`http://localhost:3000/api/users/${id}/skills`, {
+      const res2 = await fetch(`https://skill-gap-matcher-ai.onrender.com/api/users/${id}/skills`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

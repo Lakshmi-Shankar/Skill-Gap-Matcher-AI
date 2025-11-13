@@ -16,7 +16,7 @@ const Roles = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/jobs");
+        const response = await fetch("https://skill-gap-matcher-ai.onrender.com/api/jobs");
         if (!response.ok) throw new Error("Failed to fetch roles");
         const data = await response.json();
         setRoles(data);
