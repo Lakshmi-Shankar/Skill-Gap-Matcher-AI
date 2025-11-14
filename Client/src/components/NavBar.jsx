@@ -14,7 +14,7 @@ const NavBar = () => {
   const hasCookie = !!Cookies.get('editData');
 
   const handleLogout = async () => {
-    await fetch('http://localhost:3000/api/users/logout', {
+    await fetch('https://skill-gap-matcher-ai.onrender.com/api/users/logout', {
       method: 'POST',
       credentials: 'include',
     });
