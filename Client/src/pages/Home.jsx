@@ -4,13 +4,28 @@ import { Cog, View, LineSquiggle, RefreshCcw } from "lucide-react";
 import Cookies from "js-cookie";
 import UserNameCard from '../components/UserNameCard';
 import GenRoles from '../components/genRoles';
+import HomeLoader from '../components/homeLoader';
 
 const Home = () => {
   const [user, setUser] = useState({ username: '', email: '', _id: '', skills: [] });
   const [recommendedRoles, setRecommendedRoles] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
-  // Load cached recommendations from sessionStorage
+  // Loader state (added)
+  const [showLoader, setShowLoader] = useState(false);
+
+  // Trigger loader every 60 seconds (added)
+useEffect(() => {
+  const interval = setInterval(() => {
+    setShowLoader(true);
+    setTimeout(() => setShowLoader(false), 5000); // 5 seconds
+  }, 6000);
+
+  return () => clearInterval(interval);
+}, []);
+
+
+  // Load cached recommendations
   useEffect(() => {
     const cached = JSON.parse(sessionStorage.getItem("allReadyRecommended") || "[]");
     if (cached.length) setRecommendedRoles(cached);
@@ -19,12 +34,11 @@ const Home = () => {
   // Fetch user profile
   useEffect(() => {
 
-    if (!sessionStorage.getItem("reload")) {
-      sessionStorage.setItem("reload", "true");
-      window.location.reload();
-    }
-    
-    
+    // if (!sessionStorage.getItem("reload")) {
+    //   sessionStorage.setItem("reload", "true");
+    //   window.location.reload();
+    // }
+
     const fetchUserProfile = async () => {
       try {
         const res = await fetch("https://skill-gap-matcher-ai.onrender.com/api/users/profile", {
@@ -41,14 +55,13 @@ const Home = () => {
     };
     fetchUserProfile();
   }, []);
-useEffect(() => {
-  // Only fetch if user has skills and we haven't fetched recommendations yet
-  if (user.skills.length && !sessionStorage.getItem("recommendationsFetched")) {
-    fetchRecommendations();
-    sessionStorage.setItem("recommendationsFetched", "true");
-  }
-}, [user.skills]);
 
+  useEffect(() => {
+    if (user.skills.length && !sessionStorage.getItem("recommendationsFetched")) {
+      fetchRecommendations();
+      sessionStorage.setItem("recommendationsFetched", "true");
+    }
+  }, [user.skills]);
 
   // Fetch AI recommendations
   const fetchRecommendations = async () => {
@@ -83,6 +96,14 @@ useEffect(() => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
+
+      {/* Auto Loader Display */}
+      {showLoader && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
+          <HomeLoader />
+        </div>
+      )}
+
       {/* Sidebar */}
       <aside className="w-60 p-8 bg-white shadow-md">
         <nav className="flex flex-col gap-4 text-gray-700 font-semibold">
@@ -131,26 +152,25 @@ useEffect(() => {
               <RefreshCcw size={18} className={loadingRecommendations ? "animate-spin" : ""} />
               {loadingRecommendations ? "Refreshing..." : "Reload"}
             </button>
-
           </div>
 
           {recommendedRoles.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recommendedRoles.map(({ job_title, match_percentage, reason }) => (
-              <div key={job_title} className="relative group p-4 bg-white shadow rounded-lg border border-purple-200 hover:shadow-md transition cursor-pointer">
-                <h3 className="font-bold text-purple-900 mb-2">{job_title}</h3>
-                <p><strong>Match:</strong> {match_percentage}%</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendedRoles.map(({ job_title, match_percentage, reason }) => (
+                <div key={job_title} className="relative group p-4 bg-white shadow rounded-lg border border-purple-200 hover:shadow-md transition cursor-pointer">
+                  <h3 className="font-bold text-purple-900 mb-2">{job_title}</h3>
+                  <p><strong>Match:</strong> {match_percentage}%</p>
 
-                <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-3 w-64 bg-purple-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-lg z-10">
-                  <div className="px-3 py-2">{reason}</div>
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-purple-900"></div>
+                  <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-3 w-64 bg-purple-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-lg z-10">
+                    <div className="px-3 py-2">{reason}</div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-purple-900"></div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <GenRoles />
-        )}
+              ))}
+            </div>
+          ) : (
+            <GenRoles />
+          )}
 
         </section>
       </main>
