@@ -15,14 +15,14 @@ const Home = () => {
   const [showLoader, setShowLoader] = useState(false);
 
   // Trigger loader every 60 seconds (added)
-useEffect(() => {
-  const interval = setInterval(() => {
-    setShowLoader(true);
-    setTimeout(() => setShowLoader(false), 5000); // 5 seconds
-  }, 6000);
+// useEffect(() => {
+//   const interval = setInterval(() => {
+//     setShowLoader(true);
+//     setTimeout(() => setShowLoader(false), 5000); // 5 seconds
+//   }, 6000);
 
-  return () => clearInterval(interval);
-}, []);
+//   return () => clearInterval(interval);
+// }, []);
 
 
   // Load cached recommendations
