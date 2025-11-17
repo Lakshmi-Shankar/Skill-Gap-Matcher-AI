@@ -30,7 +30,7 @@ const Signup = () => {
 
   try {
     const signupPromise = axios.post("https://skill-gap-matcher-ai.onrender.com/api/users/signup", {
-      username,
+      username: name,
       email,
       password,
     });
