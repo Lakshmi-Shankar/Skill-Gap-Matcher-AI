@@ -1,20 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const GenRoles = () => {
+const Loader = () => {
   return (
     <StyledWrapper>
-      <div className='wrapper'>
-        <div className="loader">
-          <span><span /><span /><span /><span /></span>
-          <div className="base">
-            <span />
-            <div className="face" />
-          </div>
+      <div className="loader" id="loader">
+        <div className="loader-wrapper">
+          <span className="loader-letter">G</span>
+          <span className="loader-letter">e</span>
+          <span className="loader-letter">n</span>
+          <span className="loader-letter">e</span>
+          <span className="loader-letter">r</span>
+          <span className="loader-letter">a</span>
+          <span className="loader-letter">t</span>
+          <span className="loader-letter">i</span>
+          <span className="loader-letter">n</span>
+          <span className="loader-letter">g</span>
+          <span className="loader-letter">.</span>
+          <span className="loader-letter">.</span>
+          <span className="loader-letter">.</span>
+          <div className="loader-circle" />
         </div>
-        {/* <div className="longfazers">
-          <span /><span /><span /><span />
-        </div> */}
       </div>
     </StyledWrapper>
   );
@@ -22,232 +28,162 @@ const GenRoles = () => {
 
 const StyledWrapper = styled.div`
   .loader {
-    position: absolute;
-    top: 75%;
-    margin-left: 100px;
-    left: 50%;
-    animation: speeder 0.4s linear infinite;
-  }
-  .loader > span {
-    height: 5px;
-    width: 35px;
-    background: #000;
-    position: absolute;
-    top: -19px;
-    left: 60px;
-    border-radius: 2px 10px 1px 0;
-  }
-  .base span {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 6px solid transparent;
-    border-right: 100px solid #000;
-    border-bottom: 6px solid transparent;
-  }
-  .base span:before {
-    content: "";
-    height: 22px;
-    width: 22px;
-    border-radius: 50%;
-    background: #000;
-    position: absolute;
-    right: -110px;
-    top: -16px;
-  }
-  .base span:after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 0 solid transparent;
-    border-right: 55px solid #000;
-    border-bottom: 16px solid transparent;
-    top: -16px;
-    right: -98px;
-  }
-  .face {
-    position: absolute;
-    height: 12px;
-    width: 20px;
-    background: #000;
-    border-radius: 20px 20px 0 0;
-    transform: rotate(-40deg);
-    right: -125px;
-    top: -15px;
-  }
-  .face:after {
-    content: "";
-    height: 12px;
-    width: 12px;
-    background: #000;
-    right: 4px;
-    top: 7px;
-    position: absolute;
-    transform: rotate(40deg);
-    transform-origin: 50% 50%;
-    border-radius: 0 0 0 2px;
-  }
-  .loader > span > span:nth-child(1),
-  .loader > span > span:nth-child(2),
-  .loader > span > span:nth-child(3),
-  .loader > span > span:nth-child(4) {
-    width: 30px;
-    height: 1px;
-    background: #000;
-    position: absolute;
-    animation: fazer1 0.2s linear infinite;
-  }
-  .loader > span > span:nth-child(2) {
-    top: 3px;
-    animation: fazer2 0.4s linear infinite;
-  }
-  .loader > span > span:nth-child(3) {
-    top: 1px;
-    animation: fazer3 0.4s linear infinite;
-    animation-delay: -1s;
-  }
-  .loader > span > span:nth-child(4) {
-    top: 4px;
-    animation: fazer4 1s linear infinite;
-    animation-delay: -1s;
-  }
-  @keyframes fazer1 {
-    0% {
-      left: 0;
-    }
-    100% {
-      left: -80px;
-      opacity: 0;
-    }
-  }
-  @keyframes fazer2 {
-    0% {
-      left: 0;
-    }
-    100% {
-      left: -100px;
-      opacity: 0;
-    }
-  }
-  @keyframes fazer3 {
-    0% {
-      left: 0;
-    }
-    100% {
-      left: -50px;
-      opacity: 0;
-    }
-  }
-  @keyframes fazer4 {
-    0% {
-      left: 0;
-    }
-    100% {
-      left: -150px;
-      opacity: 0;
-    }
-  }
-  @keyframes speeder {
-    0% {
-      transform: translate(2px, 1px) rotate(0deg);
-    }
-    10% {
-      transform: translate(-1px, -3px) rotate(-1deg);
-    }
-    20% {
-      transform: translate(-2px, 0px) rotate(1deg);
-    }
-    30% {
-      transform: translate(1px, 2px) rotate(0deg);
-    }
-    40% {
-      transform: translate(1px, -1px) rotate(1deg);
-    }
-    50% {
-      transform: translate(-1px, 3px) rotate(-1deg);
-    }
-    60% {
-      transform: translate(-1px, 1px) rotate(0deg);
-    }
-    70% {
-      transform: translate(3px, 1px) rotate(-1deg);
-    }
-    80% {
-      transform: translate(-2px, -1px) rotate(1deg);
-    }
-    90% {
-      transform: translate(2px, 1px) rotate(0deg);
-    }
-    100% {
-      transform: translate(1px, -2px) rotate(-1deg);
-    }
-  }
-  .longfazers {
-    position: absolute;
+    // position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    background: linear-gradient(0deg, #1a3379, #0f172a, #000);
   }
-  .longfazers span {
+
+  .loader-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    font-family: "Inter", sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    color: white;
+    border-radius: 50%;
+    background-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .loader-circle {
     position: absolute;
-    height: 2px;
-    width: 20%;
-    background: #000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: transparent;
+    animation: loader-combined 2.3s linear infinite;
+    z-index: 0;
   }
-  .longfazers span:nth-child(1) {
-    top: 20%;
-    animation: lf 0.6s linear infinite;
-    animation-delay: -5s;
-  }
-  .longfazers span:nth-child(2) {
-    top: 40%;
-    animation: lf2 0.8s linear infinite;
-    animation-delay: -1s;
-  }
-  .longfazers span:nth-child(3) {
-    top: 60%;
-    animation: lf3 0.6s linear infinite;
-  }
-  .longfazers span:nth-child(4) {
-    top: 80%;
-    animation: lf4 0.5s linear infinite;
-    animation-delay: -3s;
-  }
-  @keyframes lf {
+  @keyframes loader-combined {
     0% {
-      left: 200%;
+      transform: rotate(90deg);
+      box-shadow:
+        0 6px 12px 0 #38bdf8 inset,
+        0 12px 18px 0 #005dff inset,
+        0 36px 36px 0 #1e40af inset,
+        0 0 3px 1.2px rgba(56, 189, 248, 0.3),
+        0 0 6px 1.8px rgba(0, 93, 255, 0.2);
+    }
+    25% {
+      transform: rotate(180deg);
+      box-shadow:
+        0 6px 12px 0 #0099ff inset,
+        0 12px 18px 0 #38bdf8 inset,
+        0 36px 36px 0 #005dff inset,
+        0 0 6px 2.4px rgba(56, 189, 248, 0.3),
+        0 0 12px 3.6px rgba(0, 93, 255, 0.2),
+        0 0 18px 6px rgba(30, 64, 175, 0.15);
+    }
+    50% {
+      transform: rotate(270deg);
+      box-shadow:
+        0 6px 12px 0 #60a5fa inset,
+        0 12px 6px 0 #0284c7 inset,
+        0 24px 36px 0 #005dff inset,
+        0 0 3px 1.2px rgba(56, 189, 248, 0.3),
+        0 0 6px 1.8px rgba(0, 93, 255, 0.2);
+    }
+    75% {
+      transform: rotate(360deg);
+      box-shadow:
+        0 6px 12px 0 #3b82f6 inset,
+        0 12px 18px 0 #0ea5e9 inset,
+        0 36px 36px 0 #2563eb inset,
+        0 0 6px 2.4px rgba(56, 189, 248, 0.3),
+        0 0 12px 3.6px rgba(0, 93, 255, 0.2),
+        0 0 18px 6px rgba(30, 64, 175, 0.15);
     }
     100% {
-      left: -200%;
-      opacity: 0;
+      transform: rotate(450deg);
+      box-shadow:
+        0 6px 12px 0 #4dc8fd inset,
+        0 12px 18px 0 #005dff inset,
+        0 36px 36px 0 #1e40af inset,
+        0 0 3px 1.2px rgba(56, 189, 248, 0.3),
+        0 0 6px 1.8px rgba(0, 93, 255, 0.2);
     }
   }
-  @keyframes lf2 {
-    0% {
-      left: 200%;
-    }
-    100% {
-      left: -200%;
-      opacity: 0;
-    }
+
+  .loader-letter {
+    display: inline-block;
+    opacity: 0.4;
+    transform: translateY(0);
+    animation: loader-letter-anim 2.4s infinite;
+    z-index: 1;
+    border-radius: 50ch;
+    border: none;
   }
-  @keyframes lf3 {
-    0% {
-      left: 200%;
-    }
-    100% {
-      left: -100%;
-      opacity: 0;
-    }
+
+  .loader-letter:nth-child(1) {
+    animation-delay: 0s;
   }
-  @keyframes lf4 {
-    0% {
-      left: 200%;
-    }
+  .loader-letter:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .loader-letter:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .loader-letter:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .loader-letter:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .loader-letter:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+  .loader-letter:nth-child(7) {
+    animation-delay: 0.6s;
+  }
+  .loader-letter:nth-child(8) {
+    animation-delay: 0.7s;
+  }
+  .loader-letter:nth-child(9) {
+    animation-delay: 0.8s;
+  }
+  .loader-letter:nth-child(10) {
+    animation-delay: 0.9s;
+  }
+  .loader-letter:nth-child(11) {
+    animation-delay: 1s;
+  }
+  .loader-letter:nth-child(12) {
+    animation-delay: 1.1s;
+  }
+  .loader-letter:nth-child(13) {
+    animation-delay: 1.2s;
+  }
+
+  @keyframes loader-letter-anim {
+    0%,
     100% {
-      left: -100%;
-      opacity: 0;
+      opacity: 0.4;
+      transform: translateY(0);
+    }
+    20% {
+      opacity: 1;
+      text-shadow: #f8fcff 0 0 5px;
+    }
+    40% {
+      opacity: 0.7;
+      transform: translateY(0);
     }
   }`;
 
-export default GenRoles;
+export default Loader;

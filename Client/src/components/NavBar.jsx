@@ -21,6 +21,7 @@ const NavBar = () => {
     Cookies.remove('editData');
     sessionStorage.removeItem("reload");
     sessionStorage.removeItem("allReadyRecommended");
+    sessionStorage.removeItem("recommendationsFetched");
     navigate('/');
   };
 
