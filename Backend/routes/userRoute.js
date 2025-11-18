@@ -5,6 +5,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
+router.get('/keepalive', (req, res) => {
+    res.status(200).json({ status: "ok" });
+});
+
 
 router.get('/', async (req, res) => {
     try {
