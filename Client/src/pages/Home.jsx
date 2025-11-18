@@ -34,10 +34,10 @@ const Home = () => {
   // Fetch user profile
   useEffect(() => {
 
-    // if (!sessionStorage.getItem("reload")) {
-    //   sessionStorage.setItem("reload", "true");
-    //   window.location.reload();
-    // }
+    if (!sessionStorage.getItem("reload")) {
+      sessionStorage.setItem("reload", "true");
+      window.location.reload();
+    }
 
     const fetchUserProfile = async () => {
       try {
@@ -147,7 +147,7 @@ const Home = () => {
             <button
               onClick={fetchRecommendations}
               disabled={loadingRecommendations}
-              className="flex items-center gap-2 px-5 py-2.5 font-semibold text-white bg-gray-500 rounded-full shadow-md hover:from-purple-600 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-5 py-2.5 font-semibold text-white bg-gray-700 rounded-full shadow-md hover:cursor-pointer hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCcw size={18} className={loadingRecommendations ? "animate-spin" : ""} />
               {loadingRecommendations ? "Refreshing..." : "Reload"}
