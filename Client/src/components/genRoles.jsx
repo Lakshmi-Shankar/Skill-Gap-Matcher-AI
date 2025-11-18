@@ -28,7 +28,7 @@ const Loader = () => {
 
 const StyledWrapper = styled.div`
   .loader {
-    // position: absolute;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
