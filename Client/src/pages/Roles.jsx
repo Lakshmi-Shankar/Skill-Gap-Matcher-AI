@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, Building2, Calendar, Globe, Link, Search } from "lucide-react";
-import HomeLoader from "../components/homeLoader";
+import RolesLoader from "../components/roles-page";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
@@ -74,7 +74,7 @@ const Roles = () => {
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <HomeLoader />
+        <RolesLoader />
       </div>
     );
 
