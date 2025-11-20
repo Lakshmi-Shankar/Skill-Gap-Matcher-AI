@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import EditProfile from './pages/EditProfile';
 import AboutUs from './pages/About';
 import Roles from './pages/Roles';
+import './App.css';
+import GenerateRoadmap from './pages/GenerateRoadmap';
 
 const App = () => {
   const location = useLocation();
@@ -25,6 +27,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path='/profile-edit' element={<EditProfile />} />
         <Route path='/roles' element={<Roles />} />
+        <Route path='/generate/roadmap' element={<GenerateRoadmap />} />
 
       </Routes>
     </>

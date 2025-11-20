@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Cog, View, LineSquiggle, RefreshCcw } from "lucide-react";
 import Cookies from "js-cookie";
 import UserNameCard from '../components/UserNameCard';
-import GenRoles from '../components/genRoles';
-import HomeLoader from '../components/homeLoader';
+import GenRoles from '../components/genRoles-homepage';
+import HomeLoader from '../components/roles-page';
 
 const Home = () => {
   const [user, setUser] = useState({ username: '', email: '', _id: '', skills: [] });
@@ -49,6 +49,8 @@ const Home = () => {
         const data = await res.json();
         if (!res.ok || !data.user) return;
         setUser(data.user);
+        sessionStorage.setItem('userData', JSON.stringify(data.user));
+        console.log(data.user)
       } catch (err) {
         console.error("Error fetching profile:", err);
       }
@@ -113,7 +115,7 @@ const Home = () => {
           <Link to="/roles" className="hover:text-purple-700 hover:bg-gray-100 flex items-center gap-3 px-3 py-2 rounded-md transition">
             <View className="w-5 h-5" /> View All Roles
           </Link>
-          <Link to="/roadmap/generate" className="hover:text-purple-700 hover:bg-gray-100 flex items-center gap-3 px-3 py-2 rounded-md transition">
+          <Link to="/generate/roadmap" className="hover:text-purple-700 hover:bg-gray-100 flex items-center gap-3 px-3 py-2 rounded-md transition">
             <LineSquiggle className="w-5 h-5" /> Generate Roadmap
           </Link>
         </nav>
@@ -121,7 +123,7 @@ const Home = () => {
 
       {/* Main Section */}
       <main className="grow p-8">
-        <UserNameCard name={user.username} mail={user.email} />
+        <UserNameCard name={user?.username} mail={user?.email} />
 
         {/* User Skills */}
         <section className="mb-8 mt-12 border border-purple-200 p-6 rounded-lg bg-white shadow-sm">

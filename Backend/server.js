@@ -16,6 +16,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/jobs", require("./routes/jobRoutes"));
+app.use("/api/roadmap", require("./routes/roadmap"));
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
