@@ -1,95 +1,52 @@
-import { useState, useEffect } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import React from "react";
+import { Book, Code, Terminal, Rocket } from "lucide-react"; // icons for roadmap cards
 
-const RoadmapViewer = ({ roadmap }) => {
-  // Initialize an array of booleans for each step (all closed by default)
-  const [openStates, setOpenStates] = useState([]);
+const RoadmapTree = ({ links }) => {
+  if (!links || links.length === 0) return null;
 
-  // Reset openStates whenever roadmap changes
-  useEffect(() => {
-    if (roadmap && roadmap.Steps) {
-      setOpenStates(roadmap.Steps.map(() => false));
-    }
-  }, [roadmap]);
-
-  const toggle = (i) => {
-    setOpenStates((prev) => prev.map((v, idx) => (idx === i ? !v : v)));
-  };
-
-  if (!roadmap || !roadmap.Steps) return null; // safety check
+  const icons = [<Book />, <Code />, <Terminal />, <Rocket />]; // cycle through icons
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-[#C2B280] rounded-xl shadow-lg font-mono">
-      {/* Page Title */}
-      <h1 className="text-3xl font-bold mb-6 text-[#3A3A3A] border-b-4 border-[#6B4C3B] pb-2 tracking-wider text-center">
-        🪓 Learning Crafting Table
+    <div className="max-w-5xl mx-auto p-6 bg-gray-900 rounded-xl shadow-lg font-mono">
+      <h1
+        className="text-3xl font-bold mb-8 text-gray-100 border-b-4 border-gray-700 pb-2 tracking-wider text-center"
+        style={{ fontFamily: "'Press Start 2P', monospace" }}
+      >
+        🛠️ Learning Roadmap
       </h1>
 
-      {/* Steps Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
-        {roadmap.Steps.map((step, i) => {
-          const isOpen = openStates[i];
-
-          return (
-            <div
-              key={i}
-              className="bg-[#E6D8AD] border-4 border-[#6B4C3B] rounded-md shadow-inner transition-all hover:shadow-lg cursor-pointer flex flex-col"
-            >
-              <button
-                onClick={() => toggle(i)}
-                className="w-full flex justify-between items-center p-3 bg-[#E6D8AD]"
-              >
-                <span className="font-bold text-[#3A3A3A]">
-                  Step {step.order}
-                </span>
-                {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-              </button>
-
-              <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  isOpen ? "max-h-80 p-3" : "max-h-0 p-0"
-                }`}
-              >
-                <p className="text-sm text-[#3A3A3A] whitespace-pre-line">
-                  {step.description}
-                </p>
-                {step.link && (
-                  <a
-                    href={step.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline mt-2 block"
-                  >
-                    Learn more →
-                  </a>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Resources */}
-      <h2 className="text-2xl font-bold mt-10 mb-4 text-[#3A3A3A] border-t-4 border-[#6B4C3B] pt-3 tracking-wide text-center">
-        🛠️ Resources
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
-        {roadmap.Links.map((item, i) => (
-          <a
+      {/* Responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {links.map((item, i) => (
+          <div
             key={i}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#E6D8AD] border-4 border-[#6B4C3B] rounded-md shadow-inner p-3 hover:shadow-lg transition-all flex flex-col justify-between"
+            className="bg-gray-800 border-4 border-gray-700 rounded-lg p-4 flex flex-col items-center justify-center hover:scale-105 transition-transform cursor-pointer shadow-lg"
           >
-            <p className="font-bold text-[#3A3A3A]">{item.topic}</p>
-            <p className="text-sm text-[#3A3A3A] mt-2">Open →</p>
-          </a>
+            <div className="text-yellow-400 mb-2">
+              {icons[i % icons.length]} {/* rotate icons */}
+            </div>
+            <p
+              className="font-bold text-gray-100 text-center mb-2"
+              style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "0.8rem" }}
+            >
+              {item.topic}
+            </p>
+            {item.url && (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 px-3 py-1 bg-yellow-400 text-gray-900 font-bold text-xs rounded shadow-md hover:bg-yellow-300 transition-colors"
+                style={{ fontFamily: "'Press Start 2P', monospace" }}
+              >
+                OPEN
+              </a>
+            )}
+          </div>
         ))}
       </div>
     </div>
   );
 };
 
-export default RoadmapViewer;
+export default RoadmapTree;
