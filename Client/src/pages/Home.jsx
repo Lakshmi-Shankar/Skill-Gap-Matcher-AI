@@ -50,7 +50,7 @@ const Home = () => {
         if (!res.ok || !data.user) return;
         setUser(data.user);
         sessionStorage.setItem('userData', JSON.stringify(data.user));
-        console.log(data.user)
+        // console.log(data.user)
       } catch (err) {
         console.error("Error fetching profile:", err);
       }

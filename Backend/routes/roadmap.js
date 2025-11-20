@@ -1,45 +1,56 @@
 const express = require("express");
-const axios = require("axios");
 const router = express.Router();
 
 const ROADMAP_KEY = process.env.ROADMAP_KEY;
 
-// Define your roadmap routes here
+// POST /api/roadmap/generate
 router.post("/generate", async (req, res) => {
-    const { role, skills } = req.body;
+  const { role, skills } = req.body;
 
-    // Placeholder logic for generating a roadmap
-    try{
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${ROADMAP_KEY}`,
-            "HTTP-Referer": "skillgapmatcherai.netlify.app", // Optional. Site URL for rankings on openrouter.ai.
-            "X-Title": "Skill Gap Matcher AI", // Optional. Site title for rankings on openrouter.ai.
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "model": "tngtech/deepseek-r1t2-chimera:free",
-            "messages": [
-                {
-                    "role": "system",
-                    "content": 
-                    "Generate a precise, structured learning roadmap to become a top-tier " + role + ". Use the user's current skills: " + skills + ". Return a JSON object with exactly two fields: \"Steps\" (an ordered list of clear, actionable learning stages) and \"Links\" (an array of recommended resources, each containing an object with the structure { topic: string, url: string })."
-                }
-            ]
-
-        })
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${ROADMAP_KEY}`,
+        "HTTP-Referer": "skillgapmatcherai.netlify.app",
+        "X-Title": "Skill Gap Matcher AI",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "tngtech/deepseek-r1t2-chimera:free",
+        messages: [
+          {
+            role: "system",
+            content: `Generate a list of learning resources to become a top-tier ${role}.
+Use the user's current skills: ${skills}.
+Respond **only with valid JSON**, an array of objects like:
+[
+  { "topic": "string", "url": "string" }
+]
+Do not include any other text, explanation, or markdown.`
+          }
+        ],
+      }),
     });
 
     const data = await response.json();
-    res.json({content: data.choices[0].message.content});
-    } catch(err) {
-        res.json({
-            "error": err.message
-        })
+    const raw = data.choices[0].message.content;
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (err) {
+      console.error("AI returned invalid JSON:", raw);
+      return res.status(500).json({ error: "AI returned invalid JSON" });
     }
 
-});
+    // Send clean JSON array to frontend
+    res.json({ links: parsed });
 
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
