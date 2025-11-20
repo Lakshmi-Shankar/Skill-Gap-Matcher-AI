@@ -11,8 +11,19 @@ const Home = () => {
   const [recommendedRoles, setRecommendedRoles] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
-  // Loader state
+  // Loader state (added)
   const [showLoader, setShowLoader] = useState(false);
+
+  // Trigger loader every 60 seconds (added)
+// useEffect(() => {
+//   const interval = setInterval(() => {
+//     setShowLoader(true);
+//     setTimeout(() => setShowLoader(false), 5000); // 5 seconds
+//   }, 6000);
+
+//   return () => clearInterval(interval);
+// }, []);
+
 
   // Load cached recommendations
   useEffect(() => {
@@ -22,9 +33,10 @@ const Home = () => {
 
   // Fetch user profile
   useEffect(() => {
+
     if (!sessionStorage.getItem("reload")) {
       sessionStorage.setItem("reload", "true");
-      window.location.reload();
+      // window.location.reload();
     }
 
     const fetchUserProfile = async () => {
@@ -38,17 +50,18 @@ const Home = () => {
         if (!res.ok || !data.user) return;
         setUser(data.user);
         sessionStorage.setItem('userData', JSON.stringify(data.user));
+        // console.log(data.user)
       } catch (err) {
         console.error("Error fetching profile:", err);
       }
     };
-
     fetchUserProfile();
   }, []);
 
-  // Fetch recommendations when user has skills
   useEffect(() => {
-    if (user.skills.length && !sessionStorage.getItem("recommendationsFetched")) {
+    if (!sessionStorage.getItem("recommendationsFetched")) {
+      console.log("fetching recommendations...");
+      console.log(user.skills);
       fetchRecommendations();
       sessionStorage.setItem("recommendationsFetched", "true");
     }
@@ -56,11 +69,9 @@ const Home = () => {
 
   // Fetch AI recommendations
   const fetchRecommendations = async () => {
-    if (!user.skills.length) return; // Don't fetch if no skills
 
-    setShowLoader(true); // Show loader only when fetching
+
     setLoadingRecommendations(true);
-
     try {
       const skillsArray = user.skills.map(s => `${s.name}: ${s.level}`);
       const res = await fetch("https://ai-job-assistant-kj06.onrender.com/recommend", {
@@ -69,18 +80,19 @@ const Home = () => {
         body: JSON.stringify({ skills: skillsArray }),
       });
       const data = await res.json();
+      console.log(data)
 
       if (Array.isArray(data)) {
         setRecommendedRoles(data);
         sessionStorage.setItem("allReadyRecommended", JSON.stringify(data));
       } else {
+        setRecommendedRoles([{"job_title":"Add roles to see recommendations", match_percentage:0, reason:"Please add skills to your profile to get AI-based role recommendations."}]);
         console.error("Invalid AI response:", data);
       }
     } catch (err) {
       console.error("Error fetching recommendations:", err);
     } finally {
       setLoadingRecommendations(false);
-      setShowLoader(false); // Hide loader after fetching
     }
   };
 
@@ -91,8 +103,8 @@ const Home = () => {
   return (
     <div className="flex bg-gray-50">
 
-      {/* Loader */}
-      {showLoader && user.skills.length > 0 && (
+      {/* Auto Loader Display */}
+      {showLoader && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
           <HomeLoader />
         </div>
@@ -138,39 +150,34 @@ const Home = () => {
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">AI Recommended Roles</h2>
-            {user.skills.length > 0 && (
-              <button
-                onClick={fetchRecommendations}
-                disabled={loadingRecommendations}
-                className="flex items-center gap-2 px-5 py-2.5 font-semibold text-white bg-gray-700 rounded-full shadow-md hover:cursor-pointer hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <RefreshCcw size={18} className={loadingRecommendations ? "animate-spin" : ""} />
-                {loadingRecommendations ? "Refreshing..." : "Reload"}
-              </button>
-            )}
+            <button
+              onClick={fetchRecommendations}
+              disabled={loadingRecommendations}
+              className="flex items-center gap-2 px-5 py-2.5 font-semibold text-white bg-gray-700 rounded-full shadow-md hover:cursor-pointer hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <RefreshCcw size={18} className={loadingRecommendations ? "animate-spin" : ""} />
+              {loadingRecommendations ? "Refreshing..." : "Reload"}
+            </button>
           </div>
 
-          {user.skills.length > 0 ? (
-            recommendedRoles.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendedRoles.map(({ job_title, match_percentage, reason }) => (
-                  <div key={job_title} className="relative group p-4 bg-white shadow rounded-lg border border-purple-200 hover:shadow-md transition cursor-pointer">
-                    <h3 className="font-bold text-purple-900 mb-2">{job_title}</h3>
-                    <p><strong>Match:</strong> {match_percentage}%</p>
+          {recommendedRoles.length ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendedRoles.map(({ job_title, match_percentage, reason }) => (
+                <div key={job_title} className="relative group p-4 bg-white shadow rounded-lg border border-purple-200 hover:shadow-md transition cursor-pointer">
+                  <h3 className="font-bold text-purple-900 mb-2">{job_title}</h3>
+                  <p><strong>Match:</strong> {match_percentage}%</p>
 
-                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-3 w-64 bg-purple-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-lg z-10">
-                      <div className="px-3 py-2">{reason}</div>
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-purple-900"></div>
-                    </div>
+                  <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-3 w-64 bg-purple-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-lg z-10">
+                    <div className="px-3 py-2">{reason}</div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-purple-900"></div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <GenRoles />
-            )
+                </div>
+              ))}
+            </div>
           ) : (
-            <p className="text-gray-500 italic">Add skills to see AI recommended roles.</p>
+            <GenRoles />
           )}
+
         </section>
       </main>
     </div>
