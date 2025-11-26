@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, Menu, X } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
+import Logo from '../assets/skillgapmatcher-logo.png'
 
 export default function NavBar() {
   const location = useLocation();
@@ -45,7 +46,7 @@ export default function NavBar() {
 
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer">            
-            <img src="../assets/skillgapmatcher-logo.png" alt="Skill Gap Matcher Logo" className="h-9" />
+            <img src={Logo} alt="Skill Gap Matcher Logo" className="h-9" />
             <h1 className="text-2xl font-bold text-purple-600">Skill Gap Matcher</h1>
           </div>
 
