@@ -21,12 +21,14 @@ const NavBar = () => {
       credentials: 'include',
     });
     Cookies.remove('editData');
+    Cookies.remove('token');
     sessionStorage.removeItem("reload");
     sessionStorage.removeItem("allReadyRecommended");
     sessionStorage.removeItem("recommendationsFetched");
+    sessionStorage.removeItem("userData");
     toast.warn('Logging out....');
 
-    setInterval(() => {
+    setTimeout(() => {
       navigate('/');
     }, 2000);
 
