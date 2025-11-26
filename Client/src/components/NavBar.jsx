@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import Cookies from 'js-cookie';
 
+import { toast, ToastContainer } from 'react-toastify';
+
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,7 +24,12 @@ const NavBar = () => {
     sessionStorage.removeItem("reload");
     sessionStorage.removeItem("allReadyRecommended");
     sessionStorage.removeItem("recommendationsFetched");
-    navigate('/');
+    toast.warn('Logging out....');
+
+    setInterval(() => {
+      navigate('/');
+    }, 2000);
+
   };
 
   const handleHomeClick = () => {
@@ -32,6 +39,7 @@ const NavBar = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
+      <ToastContainer position='top-right' autoClose={2000} hideProgressBar={true} />
       <div className="max-w-1xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
