@@ -45,7 +45,7 @@ export default function NavBar() {
 
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer">            
-            <img src="/leaves.png" alt="Skill Gap Matcher Logo" className="h-9" />
+            <img src="../assets/skillgapmatcher-logo.png" alt="Skill Gap Matcher Logo" className="h-9" />
             <h1 className="text-2xl font-bold text-purple-600">Skill Gap Matcher</h1>
           </div>
 
