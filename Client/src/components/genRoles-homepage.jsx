@@ -28,11 +28,13 @@ const Loader = () => {
 
 const StyledWrapper = styled.div`
   .loader {
-    position: absolute;
+    position: relative
     top: 0;
     left: 0;
+    padding: 20px;
     width: 100%;
     height: 100%;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;

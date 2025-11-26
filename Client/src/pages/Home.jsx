@@ -6,6 +6,8 @@ import UserNameCard from '../components/UserNameCard';
 import GenRoles from '../components/genRoles-homepage';
 import HomeLoader from '../components/roles-page';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 const Home = () => {
   const [user, setUser] = useState({ username: '', email: '', _id: '', skills: [] });
   const [recommendedRoles, setRecommendedRoles] = useState([]);
@@ -36,7 +38,7 @@ const Home = () => {
 
     if (!sessionStorage.getItem("reload")) {
       sessionStorage.setItem("reload", "true");
-      // window.location.reload();
+      window.location.reload();
     }
 
     const fetchUserProfile = async () => {
@@ -50,7 +52,7 @@ const Home = () => {
         if (!res.ok || !data.user) return;
         setUser(data.user);
         sessionStorage.setItem('userData', JSON.stringify(data.user));
-        // console.log(data.user)
+        console.log(data.user)
       } catch (err) {
         console.error("Error fetching profile:", err);
       }
@@ -58,21 +60,21 @@ const Home = () => {
     fetchUserProfile();
   }, []);
 
-  useEffect(() => {
-    if (!sessionStorage.getItem("recommendationsFetched")) {
-      console.log("fetching recommendations...");
-      console.log(user.skills);
-      fetchRecommendations();
-      sessionStorage.setItem("recommendationsFetched", "true");
-    }
-  }, [user.skills]);
+// useEffect(() => {
+//   if (user.skills.length > 0 && !sessionStorage.getItem("recommendationsFetched")) {
+//     fetchRecommendations();
+//     sessionStorage.setItem("recommendationsFetched", "true");
+//   }
+// }, [user.skills]);
+
 
   // Fetch AI recommendations
   const fetchRecommendations = async () => {
 
-
     setLoadingRecommendations(true);
     try {
+      console.log(user)
+
       const skillsArray = user.skills.map(s => `${s.name}: ${s.level}`);
       const res = await fetch("https://ai-job-assistant-kj06.onrender.com/recommend", {
         method: "POST",
@@ -80,19 +82,21 @@ const Home = () => {
         body: JSON.stringify({ skills: skillsArray }),
       });
       const data = await res.json();
-      console.log(data)
+      console.log("AI Recommendations:", data);
+      console.log(user); 
 
       if (Array.isArray(data)) {
         setRecommendedRoles(data);
         sessionStorage.setItem("allReadyRecommended", JSON.stringify(data));
       } else {
-        setRecommendedRoles([{"job_title":"Add roles to see recommendations", match_percentage:0, reason:"Please add skills to your profile to get AI-based role recommendations."}]);
         console.error("Invalid AI response:", data);
+        toast.error("Failed to fetch recommendations");
       }
     } catch (err) {
       console.error("Error fetching recommendations:", err);
     } finally {
       setLoadingRecommendations(false);
+      console.log("Error in finally block")
     }
   };
 
@@ -102,6 +106,7 @@ const Home = () => {
 
   return (
     <div className="flex bg-gray-50">
+      <ToastContainer position='top-right' autoClose={5000} hideProgressBar={false} />
 
       {/* Auto Loader Display */}
       {showLoader && (
@@ -156,11 +161,15 @@ const Home = () => {
               className="flex items-center gap-2 px-5 py-2.5 font-semibold text-white bg-gray-700 rounded-full shadow-md hover:cursor-pointer hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCcw size={18} className={loadingRecommendations ? "animate-spin" : ""} />
-              {loadingRecommendations ? "Refreshing..." : "Reload"}
+              {loadingRecommendations ? "Generating..." : "Generate"}
             </button>
           </div>
 
-          {recommendedRoles.length ? (
+          {loadingRecommendations ? (
+            <GenRoles /> 
+
+          ) : recommendedRoles.length > 0 ? (
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedRoles.map(({ job_title, match_percentage, reason }) => (
                 <div key={job_title} className="relative group p-4 bg-white shadow rounded-lg border border-purple-200 hover:shadow-md transition cursor-pointer">
@@ -174,9 +183,15 @@ const Home = () => {
                 </div>
               ))}
             </div>
+
           ) : (
-            <GenRoles />
+            <div className="h-24 border border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500">
+              <p className="text-sm font-medium">No recommendations yet</p>
+              <p className="text-xs">Click the “Generate” button to get AI-based roles</p>
+            </div>
+ 
           )}
+
 
         </section>
       </main>
