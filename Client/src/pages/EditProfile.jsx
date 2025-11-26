@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { User, Mail, Award, Trash2 } from 'lucide-react';
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
@@ -9,7 +9,7 @@ const EditProfile = () => {
   const { _id: id, username: initialName, email: initialEmail, skills: initialSkills } = parsedData;
 
   const [username, setUsername] = useState(initialName || '');
-  const [email, setEmail] = useState(initialEmail || '');
+  const [email] = useState(initialEmail || '');
   const [skills, setSkills] = useState(initialSkills || []);
   const [skillName, setSkillName] = useState('');
   const [skillLevel, setSkillLevel] = useState('');
@@ -28,10 +28,12 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!emailRegex.test(email)) {
       toast.error("Invalid email format");
       return;
     }
+
     try {
       const res1 = await fetch(`https://skill-gap-matcher-ai.onrender.com/api/users/update/${id}`, {
         method: "PUT",
@@ -67,15 +69,20 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="max-h-screen flex items-center justify-center p-4 rounded-2xl">
+    <div className="min-h-screen flex items-center justify-center p-4 rounded-2xl pt-10 sm:pt-24 md:pt-20 lg:pt-16">
       <ToastContainer position="bottom-left" autoClose={5000} />
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-purple-100">
+
+        {/* Header */}
         <div className="bg-gray-900 p-8 text-white rounded-2xl">
           <h2 className="text-3xl font-bold mb-2">Edit Profile</h2>
           <p className="text-purple-100">Keep your information up to date</p>
         </div>
 
+        {/* Form Section */}
         <div className="p-8 space-y-6">
+
+          {/* Username */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
             <div className="relative">
@@ -89,29 +96,28 @@ const EditProfile = () => {
             </div>
           </div>
 
+          {/* EMAIL - READONLY INPUT */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <p
+              <input
                 type="email"
                 value={email}
-                // onChange={(e) => setEmail(e.target.value)}
-                placeholder={email}
-                className="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 outline-none"
-              >
-                {email}
-              </p>
-              
+                readOnly
+                className="w-full pl-11 pr-4 py-3 rounded-lg bg-gray-100 border border-gray-300 cursor-not-allowed text-gray-500"
+              />
             </div>
           </div>
 
+          {/* Skills Section */}
           <div className="border-t pt-6">
             <div className="flex items-center gap-2 mb-4">
               <Award className="w-5 h-5 text-purple-600" />
               <h3 className="text-lg font-semibold text-gray-800">Skills & Expertise</h3>
             </div>
 
+            {/* Add Skill */}
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
               <div className="flex flex-col sm:flex-row gap-2">
                 <input
@@ -137,35 +143,33 @@ const EditProfile = () => {
               </div>
             </div>
 
+            {/* Skill List */}
             {skills.length > 0 && (
               <div className="space-y-2">
                 {skills.map((skill, i) => (
-      <div
-  key={i}
-  className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 
-             hover:shadow-md hover:bg-purple-50 transition-all duration-200"
->
-  <span className="font-medium text-gray-800">{skill.name}</span>
-  <div className="flex items-center gap-3">
-    <span
-      className={`px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(skill.level)}`}
-    >
-      {skill.level}
-    </span>
-    <button
-      onClick={() => removeSkill(i)}
-      className="text-gray-400 hover:text-red-500 transition-colors duration-200"
-    >
-      <Trash2 className="w-4 h-4" />
-    </button>
-  </div>
-</div>
-
+                  <div
+                    key={i}
+                    className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 hover:shadow-md hover:bg-purple-50 transition-all duration-200"
+                  >
+                    <span className="font-medium text-gray-800">{skill.name}</span>
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(skill.level)}`}>
+                        {skill.level}
+                      </span>
+                      <button
+                        onClick={() => removeSkill(i)}
+                        className="text-gray-400 hover:text-red-500 transition-colors duration-200"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
             )}
           </div>
 
+          {/* Submit Button */}
           <button onClick={handleSubmit} className="w-full text-white bg-gray-900 font-semibold py-3.5 rounded-lg">
             Save Changes
           </button>

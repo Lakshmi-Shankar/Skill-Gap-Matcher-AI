@@ -1,37 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import Cookies from 'js-cookie';
-
 import { toast, ToastContainer } from 'react-toastify';
 
-const NavBar = () => {
+export default function NavBar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const path = location.pathname;
   const isLandingPage = path === '/';
   const isAuthPage = ['/login', '/signup'].includes(path);
-  const isLoggedIn = !['/', '/about', '/signup', '/login', '/about'].includes(path);
-  const hasCookie = !!Cookies.get('editData');
+  const isLoggedIn = !['/', '/about', '/signup', '/login'].includes(path);
 
   const handleLogout = async () => {
     await fetch('https://skill-gap-matcher-ai.onrender.com/api/users/logout', {
       method: 'POST',
       credentials: 'include',
     });
+
     Cookies.remove('editData');
     Cookies.remove('token');
-    sessionStorage.removeItem("reload");
-    sessionStorage.removeItem("allReadyRecommended");
-    sessionStorage.removeItem("recommendationsFetched");
-    sessionStorage.removeItem("userData");
+    sessionStorage.clear();
+
     toast.warn('Logging out....');
 
     setTimeout(() => {
       navigate('/');
     }, 2000);
-
   };
 
   const handleHomeClick = () => {
@@ -41,75 +38,70 @@ const NavBar = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <ToastContainer position='top-right' autoClose={2000} hideProgressBar={true} />
-      <div className="max-w-1xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={true} />
+
+      <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <img src="../../public/leaves.png" alt="Skill Gap Matcher Logo" className="h-8" />
+          <div className="flex items-center gap-3 cursor-pointer">            
+            <img src="/leaves.png" alt="Skill Gap Matcher Logo" className="h-9" />
             <h1 className="text-2xl font-bold text-purple-600">Skill Gap Matcher</h1>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {!isLandingPage && (
-              <button
-                onClick={handleHomeClick}
-                className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium"
-              >
+              <button onClick={handleHomeClick} className="text-gray-700 hover:text-purple-600 transition font-medium">
                 Home
               </button>
             )}
 
-            {!isLandingPage && !isAuthPage &&(
-                          <a
-              href="/about"
-              className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium"
-            >
-              About Us
-            </a>
-          )}
-          {/* <a
-            href="/about"
-            className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium"
-          >
-            About Us
-            </a> */}
+            {!isLandingPage && !isAuthPage && (
+              <a href="/about" className="text-gray-700 hover:text-purple-600 transition font-medium">
+                About Us
+              </a>
+            )}
 
             {isLoggedIn && (
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-1 text-gray-700 hover:text-red-600 transition-colors duration-200 font-medium"
-              >
+              <button onClick={handleLogout} className="flex items-center gap-1 text-gray-700 hover:text-red-600 transition font-medium">
                 <LogOut size={20} />
-                <span>Logout</span>
+                Logout
               </button>
             )}
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button className="text-gray-700 hover:text-purple-600 cursor-pointer">
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="text-gray-700 hover:text-purple-600 transition">
+              {mobileOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200 py-4 px-6 space-y-4 shadow-md">
+          {!isLandingPage && (
+            <button onClick={() => { setMobileOpen(false); handleHomeClick(); }} className="block w-full text-left text-gray-700 text-lg hover:text-purple-600 transition">
+              Home
+            </button>
+          )}
+
+          {!isLandingPage && !isAuthPage && (
+            <a href="/about" onClick={() => setMobileOpen(false)} className="block w-full text-left text-gray-700 text-lg hover:text-purple-600 transition">
+              About Us
+            </a>
+          )}
+
+          {isLoggedIn && (
+            <button onClick={() => { setMobileOpen(false); handleLogout(); }} className="block w-full text-left flex items-center gap-2 text-gray-700 text-lg hover:text-red-600 transition">
+              <LogOut size={20} /> Logout
+            </button>
+          )}
+        </div>
+      )}
     </nav>
   );
-};
-
-export default NavBar;
+}
