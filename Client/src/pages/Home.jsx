@@ -7,6 +7,7 @@ import UserNameCard from '../components/UserNameCard';
 import GenRoles from '../components/genRoles-homepage';
 import HomeLoader from '../components/roles-page';
 import { ToastContainer, toast } from 'react-toastify';
+import SkillRadar from '../components/piechart.jsx';
 
 const Home = () => {
   const [user, setUser] = useState({ username: '', email: '', _id: '', skills: [] });
@@ -94,6 +95,8 @@ const Home = () => {
       {/* Main */}
       <main className="flex-1 p-6 md:p-10">
         <UserNameCard name={user?.username} mail={user?.email} />
+        <SkillRadar skills={user?.skills} />
+
 
         {/* Skills */}
         <section className="mb-8 mt-10 border border-purple-200 p-6 rounded-lg bg-white shadow-sm">
@@ -104,6 +107,9 @@ const Home = () => {
                 <li key={_id} className="flex justify-between items-center bg-purple-50 border border-purple-100 px-4 py-2 rounded-md">
                   <span className="text-purple-800 font-medium">{name}</span>
                   <span className="text-sm text-gray-600">{level}</span>
+                  {/* <div className="drop-shadow-[0_1px_4px_rgba(124,58,237,0.35)]">
+                    <SkillChart level={level} />
+                  </div> */}
                 </li>
               ))}
             </ul>
