@@ -36,7 +36,7 @@ const RoadmapTree = ({ links }) => {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 px-3 py-1 bg-yellow-400 text-gray-900 font-bold text-xs rounded shadow-md hover:bg-yellow-300 transition-colors"
+                className="mt-2 px-3 py-1 bg-blue-200 text-gray-900 font-bold text-xs rounded shadow-md hover:bg-blue-400 hover:tracking-widest transition-colors"
                 style={{ fontFamily: "'Press Start 2P', monospace" }}
               >
                 OPEN

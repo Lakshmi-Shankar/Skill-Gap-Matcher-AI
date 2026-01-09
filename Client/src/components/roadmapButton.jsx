@@ -4,7 +4,7 @@ const RoadmapButton = () => {
   return (
     <div className="relative group inline-block">
       {/* Main button */}
-      <div className="bg-yellow-400 hover:bg-yellow-300 py-2 px-5 rounded-md shadow-lg hover:shadow-xl flex justify-center items-center gap-3 cursor-pointer transition-all duration-300">
+      <div className="bg-yellow-200 hover:bg-yellow-100 py-2 px-5 rounded-md shadow-lg hover:shadow-xl flex justify-center items-center gap-3 cursor-pointer transition-all duration-300">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

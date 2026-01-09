@@ -20,21 +20,21 @@ const GetStarted = () => {
 const StyledWrapper = styled.div`
   .cssbuttons-io-button {
     background: #7c3aed;
+    border: 2px solid silver;
     color: white;
     font-family: inherit;
-    padding: 0.35em;
+    padding: 1.35em;
     padding-left: 1.2em;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 540;
     border-radius: 0.9em;
-    border: none;
     letter-spacing: 0.05em;
     display: flex;
     align-items: center;
     box-shadow: inset 0 0 1.6em -0.6em #714da6;
     overflow: hidden;
     position: relative;
-    height: 2.8em;
+    height: 3.0em;
     padding-right: 3.3em;
     cursor: pointer;
   }
@@ -59,7 +59,7 @@ const StyledWrapper = styled.div`
   }
 
   .cssbuttons-io-button .icon svg {
-    width: 1.1em;
+    width: 2.1em;
     transition: transform 0.3s;
     color: #7c3aed;
   }
